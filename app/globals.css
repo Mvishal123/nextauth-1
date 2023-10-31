@@ -12,6 +12,27 @@
   animation: move_cloud_1 20s linear infinite;
 }
 
+/* icons  */
+/* .icon { 
+  color: rgb(146, 146, 146); 
+}
+
+.icon:focus { 
+  color: rgb(52, 109, 252); 
+} */
+
+input + * {
+  color: rgb(117, 116, 116); /* Change the color to your desired color */
+}
+
+input:focus + * {
+  color: rgb(62, 81, 254); /* Change the color to your desired color */
+}
+
+
+
+
+
 /* Keyframes*/
 /* @keyframes move_cloud_1 {
   0% {
