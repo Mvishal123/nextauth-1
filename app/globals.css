@@ -2,26 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.cloud_1 {
+  @apply absolute w-32 bottom-[45%] left-[50%] z-0;
+  animation: move_cloud_1 25s linear infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.cloud_2 {
+  @apply absolute w-48 bottom-[25%] left-[20%] z-20;
+  animation: move_cloud_1 20s linear infinite;
+}
+
+/* Keyframes*/
+/* @keyframes move_cloud_1 {
+  0% {
+    transform: translateX(280%);
+  }
+  100% {
+    transform: translateX(-250%);
   }
 }
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+@keyframes move_cloud_2 {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(-250%);
+  }
+} */
