@@ -2,19 +2,19 @@
 import React, { useState } from "react";
 import SignLayout from "../components/signLayout";
 import Link from "next/link";
-import { HiAtSymbol, HiFingerPrint } from "react-icons/hi";
+import { HiAtSymbol, HiFingerPrint, HiOutlineUser } from "react-icons/hi";
 
-const Signin = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const Signup= () => {
+  const [showPassword, setShowPassword] = useState({
+    password: false,
+    confirmPassword: false,
+  });
 
-  const toggleShowPassword = () => {
-    setShowPassword((prevShowPassword) => !prevShowPassword);
-  };
 
   return (
     <div>
       <SignLayout>
-        <div className="flex flex-col justify-center items-center h-full gap-10 w-3/4 m-auto">
+        <div className="flex flex-col justify-center items-center h-full gap-10 w-3/4 m-auto py-5">
           <div className="space-y-2">
             <h1 className="text-center font-extrabold text-3xl">
               Welcome back
@@ -32,6 +32,16 @@ const Signin = () => {
                 className="w-full px-3 py-2 rounded-lg border focus:outline-none"
               />
               <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
+                <HiOutlineUser size={25} />
+              </span>
+            </div>
+            <div className="rounded-xl flex relative">
+              <input
+                type="text"
+                placeholder="email"
+                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
+              />
+              <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
                 <HiAtSymbol size={25} />
               </span>
             </div>
@@ -40,19 +50,36 @@ const Signin = () => {
                 placeholder="password"
                 id="password"
                 className="w-full px-3 py-2 rounded-lg border focus:outline-none"
-                type={showPassword ? "text" : "password"}
+                type={showPassword.password ? "text" : "password"}
               />
               <span className="flex items-center absolute inset-y-0 right-0 pr-3">
                 <label htmlFor="password">
                   <HiFingerPrint
                     size={25}
-                    onClick={toggleShowPassword}
+                    onClick={() => setShowPassword({ ...showPassword, password: !showPassword.password })}
                     style={{ cursor: "pointer"}}
                   />
                 </label>
               </span>
             </div>
-            <div className="flex pt-5">
+            <div className="rounded-xl flex relative">
+              <input
+                placeholder="confirm password"
+                id="password"
+                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
+                type={showPassword.confirmPassword ? "text" : "password"}
+              />
+              <span className="flex items-center absolute inset-y-0 right-0 pr-3">
+                <label htmlFor="password">
+                  <HiFingerPrint
+                    size={25}
+                    onClick={() => setShowPassword({ ...showPassword, confirmPassword: !showPassword.confirmPassword })}
+                    style={{ cursor: "pointer"}}
+                  />
+                </label>
+              </span>
+            </div>
+            <div className="flex pt-5"> 
               <input
                 type="submit"
                 placeholder="login"
@@ -63,19 +90,19 @@ const Signin = () => {
           </form>
           <div className="flex lg:flex-row flex-col gap-5">
             <button className="bg-slate-200 flex justify-center items-center px-3 py-2 gap-2 rounded-lg font-sans">
-              sign in with google
+              sign up with google
               <img src="./assets/google.svg" alt="" className="w-5" />
             </button>
             <button className="bg-slate-200 flex justify-center items-center px-3 py-2 gap-2 rounded-lg font-sans">
-              sign in with GitHub
+              sign up with GitHub
               <img src="./assets/github.svg" alt="" className="w-5" />
             </button>
           </div>
           <div>
             <p>
-              Don't have an account?{" "}
-              <Link href={"/signup"} className="text-purple-800">
-                Register
+              Already have an account?{" "}
+              <Link href={"/signin"} className="text-purple-800">
+                Login
               </Link>
             </p>
           </div>
@@ -85,4 +112,4 @@ const Signin = () => {
   );
 };
 
-export default Signin;
+export default Signup;

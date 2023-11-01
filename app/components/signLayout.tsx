@@ -2,7 +2,7 @@ import React from "react";
 
 const SignLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main className="flex h-screen bg-blue-300 items-center justify-evenly">
+    <main className="flex h-screen bg-blue-200 items-center justify-evenly">
       <div className="w-3/4 h-3/4 grid lg:grid-cols-2 grid-cols-1">
         <section className="relative bg-gradient-to-t from-blue-500 to-indigo-500">
           <img
