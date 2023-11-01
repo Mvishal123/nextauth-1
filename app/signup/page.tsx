@@ -1,15 +1,57 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import SignLayout from "../components/signLayout";
 import Link from "next/link";
 import { HiAtSymbol, HiFingerPrint, HiOutlineUser } from "react-icons/hi";
 
-const Signup= () => {
+import { ZodError } from "zod";
+import { ValidateSignin } from "../helpers/validations";
+
+interface Errors {
+  username: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+  general: string;
+}
+
+const Signup = () => {
+  const [errors, setErrors] = useState<Errors>({
+    username: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    general: "",
+  });
   const [showPassword, setShowPassword] = useState({
     password: false,
     confirmPassword: false,
   });
 
+  const onSubmitHandler = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData);
+    // console.log(data);
+
+    try {
+      const validatedData = ValidateSignin.parse(data);
+      console.log(validatedData);
+    } catch (err: any) {
+      console.log(err.issues);
+
+      if (err instanceof ZodError) {
+        const errorMessages: Errors = {} as Errors;
+        err.issues.forEach((issue: any) => {
+          errorMessages[issue.path[0] as keyof Errors] = issue.message;
+        });
+        setErrors({ ...errorMessages, general: "" });
+      } else {
+        setErrors({ ...errors, general: "An error occurred." });
+      }
+    }
+  };
 
   return (
     <div>
@@ -24,62 +66,112 @@ const Signup= () => {
               ipsum dolor, sit
             </p>
           </div>
-          <form action="" className="w-full space-y-3">
-            <div className="rounded-xl flex relative">
-              <input
-                type="text"
-                placeholder="username"
-                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
-              />
-              <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
-                <HiOutlineUser size={25} />
-              </span>
+          <form
+            id="form"
+            className="w-full space-y-3"
+            onSubmit={onSubmitHandler}
+          >
+            <div>
+              <div className="rounded-xl flex relative">
+                <input
+                  name="username"
+                  type="text"
+                  placeholder="username"
+                  className={`w-full px-3 py-2 rounded-lg border focus:outline-none ${
+                    errors.username && "border-red-500"
+                  }`}
+                />
+                <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
+                  <HiOutlineUser size={25} />
+                </span>
+              </div>
+              {errors.username && (
+                <p className="text-red-500 text-sm text-center">
+                  {errors.username}
+                </p>
+              )}
             </div>
-            <div className="rounded-xl flex relative">
-              <input
-                type="text"
-                placeholder="email"
-                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
-              />
-              <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
-                <HiAtSymbol size={25} />
-              </span>
+
+            <div>
+              <div className="rounded-xl flex relative">
+                <input
+                  name="email"
+                  type="text"
+                  placeholder="email"
+                  className="w-full px-3 py-2 rounded-lg border focus:outline-none"
+                />
+                <span className="icon flex items-center absolute inset-y-0 right-0 pr-3">
+                  <HiAtSymbol size={25} />
+                </span>
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm text-center">
+                  {errors.email}
+                </p>
+              )}
             </div>
-            <div className="rounded-xl flex relative">
-              <input
-                placeholder="password"
-                id="password"
-                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
-                type={showPassword.password ? "text" : "password"}
-              />
-              <span className="flex items-center absolute inset-y-0 right-0 pr-3">
-                <label htmlFor="password">
-                  <HiFingerPrint
-                    size={25}
-                    onClick={() => setShowPassword({ ...showPassword, password: !showPassword.password })}
-                    style={{ cursor: "pointer"}}
-                  />
-                </label>
-              </span>
+
+            <div>
+              <div className="rounded-xl flex relative">
+                <input
+                  name="password"
+                  placeholder="password"
+                  id="password"
+                  className="w-full px-3 py-2 rounded-lg border focus:outline-none"
+                  type={showPassword.password ? "text" : "password"}
+                />
+                <span className="flex items-center absolute inset-y-0 right-0 pr-3">
+                  <label htmlFor="password">
+                    <HiFingerPrint
+                      size={25}
+                      onClick={() =>
+                        setShowPassword({
+                          ...showPassword,
+                          password: !showPassword.password,
+                        })
+                      }
+                      style={{ cursor: "pointer" }}
+                    />
+                  </label>
+                </span>
+              </div>
+              {errors.password && (
+                <p className="text-red-500 text-sm text-center">
+                  {errors.password}
+                </p>
+              )}
             </div>
-            <div className="rounded-xl flex relative">
-              <input
-                placeholder="confirm password"
-                id="password"
-                className="w-full px-3 py-2 rounded-lg border focus:outline-none"
-                type={showPassword.confirmPassword ? "text" : "password"}
-              />
-              <span className="flex items-center absolute inset-y-0 right-0 pr-3">
-                <label htmlFor="password">
-                  <HiFingerPrint
-                    size={25}
-                    onClick={() => setShowPassword({ ...showPassword, confirmPassword: !showPassword.confirmPassword })}
-                    style={{ cursor: "pointer"}}
-                  />
-                </label>
-              </span>
+            <div>
+              <div className="rounded-xl flex relative">
+                <input
+                  name="confirmPassword"
+                  placeholder="confirm password"
+                  id="confirmPassword"
+                  className="w-full px-3 py-2 rounded-lg border focus:outline-none"
+                  type={showPassword.confirmPassword ? "text" : "password"}
+                />
+                <span className="flex items-center absolute inset-y-0 right-0 pr-3">
+                  <label htmlFor="password">
+                    <HiFingerPrint
+                      size={25}
+                      onClick={() =>
+                        setShowPassword({
+                          ...showPassword,
+                          confirmPassword: !showPassword.confirmPassword,
+                        })
+                      }
+                      style={{ cursor: "pointer" }}
+                    />
+                  </label>
+                </span>
+              </div>
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm text-center">
+                  {errors.confirmPassword}
+                </p>
+              )}
             </div>
-            <div className="flex pt-5"> 
+            <div className="flex pt-5">
               <input
                 type="submit"
                 placeholder="login"
@@ -87,6 +179,11 @@ const Signup= () => {
                 value={"sign in"}
               />
             </div>
+            {errors.general && (
+              <p className="text-red-500 text-sm text-center">
+                Password does not match/ an error occured
+              </p>
+            )}
           </form>
           <div className="flex lg:flex-row flex-col gap-5">
             <button className="bg-slate-200 flex justify-center items-center px-3 py-2 gap-2 rounded-lg font-sans">
